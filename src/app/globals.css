@@ -1,0 +1,113 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* SuperWalls brand (sampled from the logo: blue ~#0054B4, yellow ~#FCC000) */
+  --color-brand-blue: #0654b4;
+  --color-brand-blue-dark: #043f8a;
+  --color-brand-blue-soft: #eaf1fb;
+  --color-brand-yellow: #fcc000;
+  --color-brand-yellow-soft: #fff6d6;
+  --color-ink: #172033;
+  --color-soft: #f5f7fa;
+  --color-success: #15803d;
+  --color-success-soft: #e8f5ec;
+  --color-danger: #c62828;
+  --color-danger-soft: #fdecec;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #172033;
+  --card: #ffffff;
+  --card-foreground: #172033;
+  --popover: #ffffff;
+  --popover-foreground: #172033;
+  --primary: #0654b4;
+  --primary-foreground: #ffffff;
+  --secondary: #eaf1fb;
+  --secondary-foreground: #0654b4;
+  --muted: #f5f7fa;
+  --muted-foreground: #667085;
+  --accent: #f5f7fa;
+  --accent-foreground: #172033;
+  --destructive: #c62828;
+  --border: #e5e7eb;
+  --input: #d0d5dd;
+  --ring: #0654b4;
+  --radius: 0.75rem;
+  --bottom-nav-height: 4rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  a,
+  button,
+  [role="button"],
+  summary {
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+  /* Space below page content so the fixed bottom nav never covers it. */
+  .pb-nav {
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 1.5rem);
+  }
+  .scroll-mt-header {
+    scroll-margin-top: 5rem;
+  }
+}

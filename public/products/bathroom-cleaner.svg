@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Demo bathroom cleaner bottle">
+<rect width="600" height="600" fill="#EAF1FB"/>
+<ellipse cx="300" cy="528" rx="150" ry="16" fill="#172033" opacity=".08"/>
+
+<path d="M230 260 q0 -30 30 -50 h80 q30 20 30 50 v230 a30 30 0 0 1 -30 30 h-80 a30 30 0 0 1 -30 -30z" fill="#FCC000"/>
+<rect x="265" y="150" width="70" height="70" rx="10" fill="#0654B4"/>
+<rect x="255" y="120" width="90" height="40" rx="12" fill="#172033"/>
+<rect x="240" y="290" width="120" height="150" rx="14" fill="#fff"/><rect x="240" y="290" width="120" height="14" rx="7" fill="#0654B4"/><path d="M300.0 345.0 Q304.0 367.0 326.0 371.0 Q304.0 375.0 300.0 397.0 Q296.0 375.0 274.0 371.0 Q296.0 367.0 300.0 345.0Z" fill="#FCC000"/><rect x="266.4" y="406" width="67.2" height="8" rx="4" fill="#0654B4" opacity=".35"/>
+<g transform="translate(24 24)"><rect width="84" height="30" rx="15" fill="#fff" stroke="#E5E7EB"/><text x="42" y="20" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1.5" text-anchor="middle" fill="#667085">DEMO</text></g>
+</svg>

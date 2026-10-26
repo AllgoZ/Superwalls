@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Demo dishwash liquid pump bottle">
+<rect width="600" height="600" fill="#FFF6D6"/>
+<ellipse cx="300" cy="528" rx="150" ry="16" fill="#172033" opacity=".08"/>
+
+<rect x="220" y="230" width="160" height="270" rx="40" fill="#FCC000"/>
+<rect x="285" y="170" width="30" height="70" rx="8" fill="#172033"/>
+<path d="M300 150 h70 a14 14 0 0 1 14 14 v6 h-100z" fill="#172033"/>
+<rect x="240" y="280" width="120" height="150" rx="14" fill="#fff"/>
+<rect x="240" y="280" width="120" height="14" rx="7" fill="#0654B4"/>
+<circle cx="300" cy="352" r="26" fill="#0654B4" opacity=".15"/>
+<path d="M300 332 Q304 349 320 352 Q304 355 300 372 Q296 355 280 352 Q296 349 300 332Z" fill="#0654B4"/>
+<rect x="266" y="394" width="68" height="8" rx="4" fill="#0654B4" opacity=".35"/>
+<g transform="translate(24 24)"><rect width="84" height="30" rx="15" fill="#fff" stroke="#E5E7EB"/><text x="42" y="20" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1.5" text-anchor="middle" fill="#667085">DEMO</text></g>
+</svg>

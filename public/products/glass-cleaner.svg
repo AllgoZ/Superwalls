@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Demo glass cleaner spray bottle">
+<rect width="600" height="600" fill="#FFF6D6"/>
+<ellipse cx="300" cy="528" rx="150" ry="16" fill="#172033" opacity=".08"/>
+
+<rect x="225" y="230" width="150" height="270" rx="34" fill="#0654B4"/>
+<rect x="255" y="180" width="90" height="60" rx="10" fill="#172033"/>
+<path d="M255 190 h-70 a20 20 0 0 1 -20 -20 v-6 a14 14 0 0 1 14 -14 h76z" fill="#172033"/>
+<rect x="295" y="130" width="14" height="60" rx="6" fill="#0654B4"/>
+<path d="M330 160 q60 -40 130 -20" fill="none" stroke="#172033" stroke-width="8" opacity="0" />
+<rect x="235" y="285" width="130" height="150" rx="14" fill="#fff"/>
+<path d="M300 315 Q306 345 336 350 Q306 355 300 385 Q294 355 264 350 Q294 345 300 315Z" fill="#FCC000"/>
+<rect x="268" y="400" width="64" height="8" rx="4" fill="#0654B4" opacity=".35"/>
+<g transform="translate(24 24)"><rect width="84" height="30" rx="15" fill="#fff" stroke="#E5E7EB"/><text x="42" y="20" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1.5" text-anchor="middle" fill="#667085">DEMO</text></g>
+</svg>

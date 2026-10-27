@@ -1,5 +1,4 @@
 import { siteConfig } from "@/lib/config/site";
-import { supportConfig } from "@/lib/config/support";
 
 /**
  * WhatsApp support via a plain click-to-chat link (https://wa.me/...).
@@ -10,8 +9,8 @@ import { supportConfig } from "@/lib/config/support";
  *
  * Messages never include personal data (address, phone); only an order number.
  */
-export function buildWhatsAppUrl(message: string): string {
-  return `https://wa.me/${supportConfig.whatsappNumber}?text=${encodeURIComponent(message)}`;
+export function buildWhatsAppUrl(message: string, number: string): string {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
 export function generalSupportMessage(): string {
@@ -22,6 +21,6 @@ export function orderSupportMessage(orderNumber: string): string {
   return `Hi ${siteConfig.name}, I need help with my order ${orderNumber}.`;
 }
 
-export function getSupportUrl(orderNumber?: string): string {
-  return buildWhatsAppUrl(orderNumber ? orderSupportMessage(orderNumber) : generalSupportMessage());
+export function getSupportUrl(number: string, orderNumber?: string): string {
+  return buildWhatsAppUrl(orderNumber ? orderSupportMessage(orderNumber) : generalSupportMessage(), number);
 }

@@ -3,13 +3,10 @@ export interface CustomerProfile {
   fullName: string;
   email?: string;
   mobile?: string;
-  /** True when the profile comes from the mock auth service. */
-  isDemo: boolean;
 }
 
 export interface UpdateProfileInput {
   fullName: string;
-  email?: string;
   mobile?: string;
 }
 
@@ -38,6 +35,13 @@ export interface SaveAddressInput extends AddressFields {
 
 export interface Session {
   signedIn: boolean;
-  /** True while sign-in is the mock implementation (no real security). */
-  isDemo: boolean;
+  userId?: string;
+  email?: string;
+}
+
+export interface SignUpInput {
+  fullName: string;
+  email: string;
+  password: string;
+  mobile?: string;
 }

@@ -25,9 +25,12 @@ function Row({
 /** Subtotal / discount / delivery / total. Shared by the cart, checkout review and confirmation. */
 export function OrderSummary({
   totals,
+  discountLabel,
   className,
 }: {
   totals: Pick<CartTotals, "subtotalPaise" | "discountPaise" | "deliveryPaise" | "totalPaise">;
+  /** Names the discount line, for example "Coupon SAVE10". */
+  discountLabel?: string;
   className?: string;
 }) {
   return (
@@ -35,7 +38,7 @@ export function OrderSummary({
       <Row label="Subtotal" value={formatINR(totals.subtotalPaise)} />
       {totals.discountPaise > 0 ? (
         <Row
-          label={commerceConfig.discount?.label ?? "Discount"}
+          label={discountLabel ?? commerceConfig.discount?.label ?? "Discount"}
           value={`−${formatINR(totals.discountPaise)}`}
           tone="success"
         />

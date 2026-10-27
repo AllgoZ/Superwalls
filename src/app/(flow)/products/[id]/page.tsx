@@ -10,17 +10,16 @@ import { ProductGallery } from "@/components/shop/product-gallery";
 import { PurchasePanel } from "@/components/shop/purchase-panel";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getStockState } from "@/lib/commerce/pricing";
-import { getProductById, getProducts } from "@/lib/services/products";
-
-export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((product) => ({ id: product.id }));
-}
+import { getProductById } from "@/lib/services/products";
 
 export async function generateMetadata({ params }: PageProps<"/products/[id]">): Promise<Metadata> {
   const { id } = await params;
   const product = await getProductById(id);
-  return { title: product ? product.name : "Product not found" };
+  if (!product) return { title: "Product not found" };
+  return {
+    title: product.seoTitle || product.name,
+    description: product.seoDescription || product.tagline || undefined,
+  };
 }
 
 function ProductSkeleton() {

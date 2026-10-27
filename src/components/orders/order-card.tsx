@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { DemoTag, OrderStatusBadge, PaymentStatusBadge } from "@/components/common/status-badge";
+import { OrderStatusBadge, PaymentStatusBadge } from "@/components/common/status-badge";
 import { formatDate, formatINR } from "@/lib/formatters";
 import type { Order } from "@/lib/types";
 
@@ -18,7 +18,6 @@ export function OrderCard({ order }: { order: Order }) {
         <div className="min-w-0">
           <h2 className="flex flex-wrap items-center gap-2 text-sm font-bold text-ink">
             <span className="truncate">{order.orderNumber}</span>
-            {order.isDemo ? <DemoTag /> : null}
           </h2>
           <p className="text-xs text-muted-foreground">Placed on {formatDate(order.createdAt)}</p>
         </div>
@@ -33,7 +32,7 @@ export function OrderCard({ order }: { order: Order }) {
       </div>
 
       <Link
-        href={`/orders/${order.id}`}
+        href={`/orders/${encodeURIComponent(order.orderNumber)}`}
         className="mt-4 flex min-h-11 items-center justify-between rounded-xl bg-brand-blue-soft px-4 text-sm font-semibold text-brand-blue transition-colors hover:bg-brand-blue-soft/70"
       >
         <span>

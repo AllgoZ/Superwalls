@@ -1,29 +1,36 @@
 import { isSupabaseConfigured } from "@/lib/config/env";
 import type { Repositories } from "./contracts";
-import { mockAddresses, mockAuth, mockProfile } from "./mock/account";
-import { mockOrders } from "./mock/orders";
 import { mockProducts } from "./mock/products";
+import { supabaseAddresses, supabaseProfile } from "./supabase/account";
+import { supabaseAuth } from "./supabase/auth";
+import { supabaseOrders } from "./supabase/orders";
+import { supabaseProducts } from "./supabase/products";
+import { unavailableAddresses, unavailableAuth, unavailableOrders, unavailableProfile } from "./unavailable";
 
 /**
  * The one place that decides which backend the app talks to.
  *
- * TODO(supabase): once Supabase-backed repositories exist, return them here
- * when `isSupabaseConfigured` is true. Until then the app always runs on demo
- * data, and `dataSource` says so.
+ * With Supabase configured, products / profile / addresses / orders come from Postgres through Row Level
+ * Security. Without it, only the demo catalog works; there is no fake account or order store.
  */
-const mockRepositories: Repositories = {
-  products: mockProducts,
-  orders: mockOrders,
-  profile: mockProfile,
-  addresses: mockAddresses,
-  auth: mockAuth,
+const supabaseRepositories: Repositories = {
+  products: supabaseProducts,
+  orders: supabaseOrders,
+  profile: supabaseProfile,
+  addresses: supabaseAddresses,
+  auth: supabaseAuth,
 };
 
-export const repositories: Repositories = mockRepositories;
+const offlineRepositories: Repositories = {
+  products: mockProducts,
+  orders: unavailableOrders,
+  profile: unavailableProfile,
+  addresses: unavailableAddresses,
+  auth: unavailableAuth,
+};
+
+export const repositories: Repositories = isSupabaseConfigured ? supabaseRepositories : offlineRepositories;
 
 export const dataSource = {
-  /** What the app is really using right now. */
-  mode: "demo" as "demo" | "supabase",
-  /** True when credentials exist but no Supabase repositories are wired up yet. */
-  credentialsDetectedButUnused: isSupabaseConfigured,
+  mode: (isSupabaseConfigured ? "supabase" : "offline") as "supabase" | "offline",
 };

@@ -111,3 +111,27 @@
     scroll-margin-top: 5rem;
   }
 }
+
+/* Admin CMS theme. Scoped to .admin-root so the storefront keeps its own brand tokens. */
+.admin-root {
+  --primary: #1556b5;
+  --ring: #1556b5;
+  --secondary: #eaf1fb;
+  --secondary-foreground: #1556b5;
+  --background: #f5f7fa;
+  --foreground: #172033;
+  --muted: #eef1f6;
+  --muted-foreground: #667085;
+  --accent: #eef1f6;
+  --border: #e3e7ee;
+  --input: #d0d5dd;
+  --radius: 0.625rem;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@media print {
+  .admin-root {
+    background: #fff;
+  }
+}

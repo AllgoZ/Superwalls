@@ -1,7 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { AuthSync } from "@/components/auth/auth-sync";
 import { CartHydrator } from "@/components/cart/cart-hydrator";
+import { SupportProvider } from "@/components/common/support-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { resolveSupport } from "@/lib/config/support";
+import { getPublicSettings } from "@/lib/server/content";
 import { siteConfig } from "@/lib/config/site";
 import "./globals.css";
 
@@ -26,7 +30,10 @@ export const viewport: Viewport = {
   themeColor: "#0654b4",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // Cached and tagged: edits to Settings > Contact reach every page without a redeploy.
+  const { contact } = await getPublicSettings();
+  const support = resolveSupport(contact);
   return (
     <html lang="en" className={`${plusJakarta.variable} h-full`}>
       <body className="flex min-h-full flex-col bg-white font-sans text-ink">
@@ -37,7 +44,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <CartHydrator />
-        {children}
+        <AuthSync />
+        <SupportProvider value={support}>{children}</SupportProvider>
         <Toaster position="top-center" closeButton />
       </body>
     </html>

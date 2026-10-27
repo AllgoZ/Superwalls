@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:migrate": "node scripts/db-migrate.mjs",
+    "db:verify": "node scripts/db-verify.mjs",
+    "typecheck": "tsc --noEmit",
+    "api:verify": "node scripts/api-verify.mjs",
+    "admin:bootstrap": "node scripts/admin-bootstrap.mjs",
+    "admin:verify": "node scripts/admin-verify.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -14,11 +20,14 @@
     "@supabase/supabase-js": "^2.118.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cn": "^0.5.0",
     "lucide-react": "^1.59.0",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-hook-form": "^7.90.0",
+    "react-markdown": "^10.1.0",
+    "server-only": "^0.0.1",
     "shadcn": "^4.22.0",
     "sonner": "^2.0.8",
     "tailwind-merge": "^3.7.0",
@@ -29,10 +38,12 @@
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
+    "pg": "^8.23.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

@@ -37,10 +37,31 @@ export const addressSchema = z.object({
 
 export type AddressFormValues = z.infer<typeof addressSchema>;
 
+/** Delivery step: the address plus the contact email used for the order confirmation. */
+export const deliverySchema = addressSchema.extend({
+  email: z.email("Enter a valid email address").max(254, "Email is too long"),
+});
+export type DeliveryFormValues = z.infer<typeof deliverySchema>;
+
 export const profileSchema = z.object({
   fullName: z.string().trim().min(2, "Enter your name").max(80, "Name is too long"),
-  email: z.union([z.literal(""), z.email("Enter a valid email address")]),
   mobile: z.union([z.literal(""), z.string().regex(MOBILE_REGEX, "Enter a valid 10-digit mobile number")]),
 });
 
 export type ProfileFormValues = z.infer<typeof profileSchema>;
+
+export const PASSWORD_MIN_LENGTH = 8;
+
+export const loginSchema = z.object({
+  email: z.email("Enter a valid email address"),
+  password: z.string().min(1, "Enter your password"),
+});
+export type LoginFormValues = z.infer<typeof loginSchema>;
+
+export const signUpSchema = z.object({
+  fullName: z.string().trim().min(2, "Enter your name").max(80, "Name is too long"),
+  email: z.email("Enter a valid email address").max(254, "Email is too long"),
+  mobile: z.union([z.literal(""), z.string().regex(MOBILE_REGEX, "Enter a valid 10-digit mobile number")]),
+  password: z.string().min(PASSWORD_MIN_LENGTH, `Use at least ${PASSWORD_MIN_LENGTH} characters`).max(72, "Password is too long"),
+});
+export type SignUpFormValues = z.infer<typeof signUpSchema>;

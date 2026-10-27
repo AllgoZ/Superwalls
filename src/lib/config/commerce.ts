@@ -1,8 +1,10 @@
-import type { Paise, PaymentMethod } from "@/lib/types";
+import type { Paise } from "@/lib/types";
 
 /**
- * Commerce policy. Every value here is a DEMO placeholder: the real delivery,
- * discount and payment policies have not been specified yet.
+ * Built-in commerce defaults. The live delivery rules are edited in the admin panel (Settings > Delivery) and read
+ * from the database; these values are only the fallback when that row is unavailable. There is no automatic
+ * discount: promotions are coupons created in the admin panel and validated by the server. Payment is online-only;
+ * there is no Cash on Delivery.
  */
 export interface CommerceConfig {
   /** Flat delivery charge. */
@@ -16,34 +18,16 @@ export interface CommerceConfig {
     percentOff: number;
     maxDiscountPaise: Paise;
   } | null;
-  /** Upper bound per cart line, in addition to each product's stock. */
+  /** Orders below this subtotal are refused by the server (0 = no minimum). */
+  minOrderPaise: Paise;
+  /** Upper bound per cart line, in addition to each product's stock. Enforced again by the database. */
   maxQuantityPerItem: number;
-  paymentMethods: PaymentMethod[];
 }
 
 export const commerceConfig: CommerceConfig = {
   deliveryFeePaise: 4900,
   freeDeliveryThresholdPaise: 49900,
-  discount: {
-    label: "Demo discount",
-    minSubtotalPaise: 79900,
-    percentOff: 5,
-    maxDiscountPaise: 10000,
-  },
+  discount: null,
+  minOrderPaise: 0,
   maxQuantityPerItem: 10,
-  paymentMethods: [
-    {
-      id: "cod",
-      label: "Cash on Delivery",
-      description: "Pay in cash when your order arrives.",
-      enabled: true,
-    },
-    {
-      id: "online",
-      label: "Pay online (UPI / cards)",
-      description: "Secure online payment.",
-      enabled: false,
-      unavailableReason: "Online payment is not available yet.",
-    },
-  ],
 };

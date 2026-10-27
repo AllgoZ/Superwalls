@@ -11,7 +11,7 @@ export default function OrderDetailPage({ params }: PageProps<"/orders/[id]">) {
       {/* Order ids are only known at request time, so the lookup streams in behind a Suspense boundary. */}
       <Suspense fallback={<ListSkeleton rows={3} rowClassName="h-40" />}>
         {params.then(({ id }) => (
-          <OrderDetail orderId={id} />
+          <OrderDetail orderNumber={decodeURIComponent(id)} />
         ))}
       </Suspense>
     </div>

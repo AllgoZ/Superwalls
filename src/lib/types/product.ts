@@ -22,6 +22,13 @@ export interface Product {
   stock: number;
   /** True while the catalog is placeholder data. */
   isDemo: boolean;
+  /** Highlighted in the homepage "Featured products" section. */
+  isFeatured?: boolean;
+  /** Category (admin-managed). Null/undefined = uncategorised. */
+  categoryId?: string | null;
+  /** Optional search-engine title / description set in the admin panel. */
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export type StockState = "in_stock" | "low_stock" | "out_of_stock";

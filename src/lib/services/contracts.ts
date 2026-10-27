@@ -1,21 +1,18 @@
 import type {
   Address,
-  CreateOrderInput,
   CustomerProfile,
   Order,
-  PaymentMethodId,
-  PaymentStatus,
-  Paise,
   Product,
   SaveAddressInput,
   Session,
+  SignUpInput,
   UpdateProfileInput,
 } from "@/lib/types";
 
 /**
- * Data-access contracts. The mock implementations (`./mock`) satisfy these
- * today; Supabase-backed implementations will satisfy the same interfaces, so
- * the UI does not change when the backend is connected.
+ * Data-access contracts for everything the browser may touch directly. The browser can only READ the catalog,
+ * and read / edit its own profile, addresses and orders, because Row Level Security enforces it.
+ * Creating orders and taking payments is NOT here: that is server-side (see `services/checkout.ts`).
  */
 
 export interface ProductsRepository {
@@ -24,14 +21,9 @@ export interface ProductsRepository {
 }
 
 export interface OrdersRepository {
+  /** The signed-in customer's own orders, newest first. */
   list(): Promise<Order[]>;
-  getById(id: string): Promise<Order | null>;
-  /**
-   * Creates an order. Implementations must recompute prices, discounts,
-   * delivery and totals server-side from authoritative data; the input carries
-   * no amounts on purpose.
-   */
-  create(input: CreateOrderInput): Promise<Order>;
+  getByNumber(orderNumber: string): Promise<Order | null>;
 }
 
 export interface ProfileRepository {
@@ -47,28 +39,12 @@ export interface AddressesRepository {
 
 export interface AuthRepository {
   getSession(): Promise<Session>;
-  /** Mock only: there is no real security. Replace with Supabase Auth. */
-  signIn(): Promise<Session>;
+  /** Returns true when the account is created but the email must be verified before signing in. */
+  signUp(input: SignUpInput): Promise<{ needsEmailVerification: boolean }>;
+  signIn(email: string, password: string): Promise<Session>;
   signOut(): Promise<Session>;
-}
-
-export interface PaymentRequest {
-  orderReference: string;
-  method: PaymentMethodId;
-  amountPaise: Paise;
-}
-
-export interface PaymentResult {
-  /** Payment status to record on the order. */
-  status: PaymentStatus;
-  /** Provider reference, once a real gateway exists. */
-  providerReference?: string;
-}
-
-/** One provider per payment method. Real gateways implement this interface. */
-export interface PaymentProvider {
-  method: PaymentMethodId;
-  process(request: PaymentRequest): Promise<PaymentResult>;
+  /** The current access token, or null when signed out. Sent to our own API as a bearer token. */
+  getAccessToken(): Promise<string | null>;
 }
 
 export interface Repositories {

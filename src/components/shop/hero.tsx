@@ -12,7 +12,16 @@ function Sparkle({ className }: { className?: string }) {
   );
 }
 
-export function Hero() {
+export interface HeroContent {
+  heading?: string;
+  subtitle?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+/** The default hero. Its text is editable in the admin panel (Banners & sections > Hero). */
+export function Hero({ heading, subtitle, ctaLabel, ctaHref }: HeroContent) {
+  const cta = ctaLabel ?? "Shop Products";
   return (
     <section aria-labelledby="hero-heading" className="px-4 pt-4 sm:px-6 md:pt-8">
       <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-brand-blue px-5 py-7 text-white sm:px-10 sm:py-12 md:py-16">
@@ -33,17 +42,16 @@ export function Hero() {
             id="hero-heading"
             className="mt-2 text-[1.75rem] leading-tight font-extrabold tracking-tight sm:text-4xl md:text-5xl"
           >
-            A cleaner home starts here.
+            {heading || "A cleaner home starts here."}
           </h1>
           <p className="mt-3 text-sm text-white/90 sm:text-base">
-            {siteConfig.tagline}. Pick your essentials and order in a few taps.
+            {subtitle || `${siteConfig.tagline}. Pick your essentials and order in a few taps.`}
           </p>
-          <a
-            href="#products"
-            className={cn(buttonVariants({ variant: "accent", size: "lg" }), "mt-6")}
-          >
-            Shop Products
-          </a>
+          {cta ? (
+            <a href={ctaHref || "#products"} className={cn(buttonVariants({ variant: "accent", size: "lg" }), "mt-6")}>
+              {cta}
+            </a>
+          ) : null}
         </div>
       </div>
     </section>

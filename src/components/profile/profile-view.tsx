@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import {
   Bell,
@@ -14,10 +15,11 @@ import {
   Pencil,
   Plus,
   ShieldCheck,
+  UserPlus,
   UserRound,
 } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ErrorState, ListSkeleton } from "@/components/common/states";
 import { WhatsAppLink } from "@/components/common/whatsapp-link";
 import { siteConfig } from "@/lib/config/site";
@@ -25,7 +27,7 @@ import { dataSource } from "@/lib/services/repositories";
 import { useServiceQuery } from "@/lib/hooks/use-service-query";
 import { useProfile, useSession } from "@/lib/hooks/use-session";
 import { getAddresses } from "@/lib/services/addresses";
-import { signIn, signOut } from "@/lib/services/auth";
+import { signOut } from "@/lib/services/auth";
 import { toErrorMessage } from "@/lib/services/errors";
 import type { Address } from "@/lib/types";
 import { AddressSheet } from "./address-sheet";
@@ -118,22 +120,30 @@ export function ProfileView() {
                 <UserRound className="size-6" />
               </span>
               <div>
-                <p className="text-lg font-extrabold text-ink">You&apos;re browsing as a guest</p>
+                <p className="text-lg font-extrabold text-ink">You&apos;re shopping as a guest</p>
                 <p className="text-sm text-muted-foreground">
-                  Sign in to keep your details handy for faster checkout.
+                  No account needed to shop. Log in to see your order history and saved addresses.
                 </p>
               </div>
             </div>
-            <Button size="lg" className="w-full" disabled={busy} onClick={() => run(signIn, "Signed in (demo)")}>
-              <LogIn aria-hidden />
-              Sign in (demo)
-            </Button>
+            {dataSource.mode === "supabase" ? (
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Link href="/login?next=%2Fprofile" className={`${buttonVariants({ size: "lg" })} flex-1`}>
+                  <LogIn aria-hidden />
+                  Log in
+                </Link>
+                <Link href="/signup?next=%2Fprofile" className={`${buttonVariants({ size: "lg", variant: "outline" })} flex-1`}>
+                  <UserPlus aria-hidden />
+                  Create account
+                </Link>
+              </div>
+            ) : (
+              <p className="rounded-xl bg-brand-yellow-soft px-3 py-2.5 text-sm text-ink">
+                Accounts aren&apos;t available until the store backend is connected.
+              </p>
+            )}
           </div>
         )}
-        <p className="mt-3 rounded-xl bg-brand-yellow-soft px-3 py-2 text-xs text-ink">
-          Demo sign-in only: there is no password and no real account security. Real sign-in arrives with the
-          backend integration.
-        </p>
       </section>
 
       {/* Delivery */}
@@ -165,6 +175,7 @@ export function ProfileView() {
       {/* Shopping and support */}
       <SettingsGroup title="Shopping and support" id="support">
         <SettingsLink href="/orders" icon={ClipboardList} label="My Orders" detail="Track and review your orders" />
+        <SettingsLink href="/track" icon={ClipboardList} label="Track a guest order" detail="Use your order number and tracking code" />
         <SettingsLink href="/help" icon={CircleHelp} label="Help and Support" detail="Answers to common questions" />
         <SettingsLink href="/help#contact" icon={MailQuestion} label="Contact Us" />
         <SettingsLink href="/help#faq" icon={Info} label="Frequently Asked Questions" />
@@ -190,8 +201,8 @@ export function ProfileView() {
         <SettingsInfo
           icon={Info}
           label="Version"
-          detail={`${siteConfig.name} ${siteConfig.version} · ${dataSource.mode === "demo" ? "Demo mode" : "Live"}${
-            dataSource.credentialsDetectedButUnused ? " (Supabase keys found, not yet connected)" : ""
+          detail={`${siteConfig.name} ${siteConfig.version} · ${
+            dataSource.mode === "supabase" ? "Connected" : "Catalog preview (backend not connected)"
           }`}
         />
       </SettingsGroup>

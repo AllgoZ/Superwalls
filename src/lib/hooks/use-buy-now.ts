@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { buildCartLines, calculateTotals } from "@/lib/commerce/pricing";
 import { getProducts } from "@/lib/services/products";
 import { useBuyNowStore } from "@/lib/stores/buy-now-store";
+import { useCommerceConfig } from "./use-commerce-config";
 import { useServiceQuery } from "./use-service-query";
 
 /** Same shape as `useCart()`, but for the single "Buy Now" item. */
@@ -16,7 +17,8 @@ export function useBuyNow() {
     () => (products.data && item ? buildCartLines([item], products.data) : []),
     [item, products.data],
   );
-  const totals = useMemo(() => calculateTotals(lines), [lines]);
+  const config = useCommerceConfig();
+  const totals = useMemo(() => calculateTotals(lines, config), [lines, config]);
 
   const status = products.status === "error" ? "error" : hydrated && products.data ? "ready" : "loading";
 

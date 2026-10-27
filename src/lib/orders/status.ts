@@ -1,8 +1,8 @@
-import type { OrderStatus, PaymentMethodId, PaymentStatus } from "@/lib/types";
+import type { OrderStatus, PaymentStatus } from "@/lib/types";
 
 /**
- * Central place for order/payment status wording and ordering. Adapt these
- * maps to the real backend workflow; the UI reads everything from here.
+ * Central place for order/payment status wording and ordering. Fulfilment status and payment
+ * status are independent: an order is only ever "placed" once its payment is verified as paid.
  */
 
 export type StatusTone = "neutral" | "info" | "progress" | "success" | "danger" | "warning";
@@ -11,9 +11,14 @@ export const ORDER_STATUS_META: Record<
   OrderStatus,
   { label: string; description: string; tone: StatusTone }
 > = {
+  pending_payment: {
+    label: "Awaiting payment",
+    description: "We'll place your order as soon as the payment is confirmed.",
+    tone: "warning",
+  },
   placed: {
     label: "Order placed",
-    description: "We've received your order.",
+    description: "Payment confirmed. We've received your order.",
     tone: "info",
   },
   confirmed: {
@@ -64,12 +69,23 @@ export function isOrderActive(status: OrderStatus): boolean {
 
 export const PAYMENT_STATUS_META: Record<PaymentStatus, { label: string; tone: StatusTone }> = {
   pending: { label: "Payment pending", tone: "warning" },
+  initiated: { label: "Payment in progress", tone: "warning" },
   paid: { label: "Paid", tone: "success" },
   failed: { label: "Payment failed", tone: "danger" },
+  cancelled: { label: "Payment cancelled", tone: "danger" },
   refunded: { label: "Refunded", tone: "neutral" },
+  partially_refunded: { label: "Partially refunded", tone: "neutral" },
 };
 
-export const PAYMENT_METHOD_LABEL: Record<PaymentMethodId, string> = {
-  cod: "Cash on Delivery",
-  online: "Online payment",
-};
+/** Payment statuses from which the customer can try to pay again. */
+export function canRetryPayment(order: { status: OrderStatus; paymentStatus: PaymentStatus }): boolean {
+  return (
+    order.status === "pending_payment" &&
+    (order.paymentStatus === "failed" ||
+      order.paymentStatus === "cancelled" ||
+      order.paymentStatus === "pending" ||
+      order.paymentStatus === "initiated")
+  );
+}
+
+export const PAYMENT_METHOD_LABEL = "Online payment";

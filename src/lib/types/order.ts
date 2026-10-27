@@ -1,7 +1,9 @@
 import type { AddressFields } from "./customer";
 import type { Paise } from "./product";
 
+/** Fulfilment lifecycle. Kept separate from payment status on purpose. */
 export const ORDER_STATUSES = [
+  "pending_payment",
   "placed",
   "confirmed",
   "processing",
@@ -12,21 +14,18 @@ export const ORDER_STATUSES = [
 ] as const;
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
-export const PAYMENT_STATUSES = ["pending", "paid", "failed", "refunded"] as const;
+export const PAYMENT_STATUSES = [
+  "pending",
+  "initiated",
+  "paid",
+  "failed",
+  "cancelled",
+  "refunded",
+  "partially_refunded",
+] as const;
 export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
 
-export type PaymentMethodId = "cod" | "online";
-
-/** A payment method offered at checkout. Configured in `config/commerce.ts`. */
-export interface PaymentMethod {
-  id: PaymentMethodId;
-  label: string;
-  description: string;
-  /** Disabled methods are shown but cannot be selected. */
-  enabled: boolean;
-  /** Shown when the method is disabled. */
-  unavailableReason?: string;
-}
+export type CustomerType = "registered" | "guest";
 
 export interface OrderItem {
   productId: string;
@@ -44,13 +43,13 @@ export interface OrderStatusEvent {
 
 export interface Order {
   id: string;
-  /** Human-friendly reference shown to customers. */
+  /** Human-friendly reference shown to customers. Not a secret and never used as authentication. */
   orderNumber: string;
   createdAt: string;
   status: OrderStatus;
   statusHistory: OrderStatusEvent[];
-  paymentMethod: PaymentMethodId;
   paymentStatus: PaymentStatus;
+  customerType: CustomerType;
   items: OrderItem[];
   subtotalPaise: Paise;
   discountPaise: Paise;
@@ -58,18 +57,4 @@ export interface Order {
   totalPaise: Paise;
   /** Address snapshot taken at order time. */
   address: AddressFields;
-  /** True for seeded or mock-created orders. */
-  isDemo: boolean;
-}
-
-/**
- * Input for creating an order. Deliberately has no prices or totals: the
- * service recomputes them from the catalog so the client is never trusted.
- */
-export interface CreateOrderInput {
-  items: { productId: string; quantity: number }[];
-  address: AddressFields;
-  paymentMethod: PaymentMethodId;
-  /** Idempotency key: submitting the same key twice returns the same order. */
-  clientRequestId: string;
 }

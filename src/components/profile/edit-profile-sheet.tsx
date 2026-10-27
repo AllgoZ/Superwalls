@@ -28,7 +28,6 @@ function ProfileForm({ profile, onDone }: { profile: CustomerProfile; onDone: ()
     resolver: zodResolver(profileSchema),
     defaultValues: {
       fullName: profile.fullName,
-      email: profile.email ?? "",
       mobile: profile.mobile ?? "",
     },
     mode: "onTouched",
@@ -38,7 +37,6 @@ function ProfileForm({ profile, onDone }: { profile: CustomerProfile; onDone: ()
     try {
       await updateProfile({
         fullName: values.fullName,
-        email: values.email || undefined,
         mobile: values.mobile || undefined,
       });
       toast.success("Profile updated");
@@ -53,9 +51,11 @@ function ProfileForm({ profile, onDone }: { profile: CustomerProfile; onDone: ()
       <FormField id="profile-name" label="Full name" error={errors.fullName?.message}>
         {(control) => <Input {...control} autoComplete="name" {...register("fullName")} />}
       </FormField>
-      <FormField id="profile-email" label="Email" optional error={errors.email?.message}>
-        {(control) => <Input {...control} type="email" autoComplete="email" {...register("email")} />}
-      </FormField>
+      <div className="space-y-1.5">
+        <p className="text-sm font-semibold text-ink">Email</p>
+        <p className="rounded-xl border bg-soft px-3.5 py-3 text-base text-muted-foreground">{profile.email ?? "No email"}</p>
+        <p className="text-xs text-muted-foreground">Your email is tied to your login and can&apos;t be changed here.</p>
+      </div>
       <FormField id="profile-mobile" label="Mobile number" optional error={errors.mobile?.message}>
         {(control) => (
           <div className="flex">
@@ -94,7 +94,7 @@ export function EditProfileSheet({ open, onOpenChange, profile }: EditProfileShe
       <SheetContent side="bottom" className="mx-auto max-h-[90dvh] max-w-lg overflow-y-auto rounded-t-3xl">
         <SheetHeader>
           <SheetTitle className="text-lg font-bold">Edit profile</SheetTitle>
-          <SheetDescription>Demo profile stored on this device only.</SheetDescription>
+          <SheetDescription>Update the name and mobile number on your account.</SheetDescription>
         </SheetHeader>
         <ProfileForm profile={profile} onDone={() => onOpenChange(false)} />
       </SheetContent>

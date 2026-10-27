@@ -89,7 +89,7 @@ export function AddressSheet({ open, onOpenChange, address }: AddressSheetProps)
       <SheetContent side="bottom" className="mx-auto max-h-[90dvh] max-w-lg overflow-y-auto rounded-t-3xl">
         <SheetHeader>
           <SheetTitle className="text-lg font-bold">{address ? "Edit address" : "Add address"}</SheetTitle>
-          <SheetDescription>Saved on this device for faster checkout.</SheetDescription>
+          <SheetDescription>Saved to your account for faster checkout.</SheetDescription>
         </SheetHeader>
         <AddressForm address={address} onDone={() => onOpenChange(false)} />
       </SheetContent>
